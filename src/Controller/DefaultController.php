@@ -7,19 +7,38 @@ use App\Services\GiftsService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_default")
-     */
-    public function index(GiftsService $giftsService): Response
+    public function __construct($logger)
     {
+        //use $logger service
+    }
+    /**
+     * @Route("/page", name="app_default")
+     */
+    public function index(
+        GiftsService $giftsService, Request $request, SessionInterface $session
+    ): Response 
+    {
+        //exit($request->cookies->get('PHPSESSID'));
         //$this->addFlash('notice', 'Notice message!');
         //$this->addFlash('warning', 'Warning message!');
+        //$session->set('name', 'Nemanja');
+        //exit($request->query->get('page', 1));//GET
+        //$request->request->get('page');//POST
+
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+        if (!$users) {
+            throw new NotFoundHttpException('No users!');
+        }
        
         return $this->render('default/index.html.twig', [ 
             'controller_name' => 'DefaultController',
@@ -75,4 +94,54 @@ class DefaultController extends AbstractController
 
         return $res;
     }
+
+    /**
+     * @Route("/generate-url/{param?}", name="generate_url")
+     */
+    public function generate_url() {
+        exit($this->generateUrl(
+            'generate_url',//Mora da postoji ova ruta, gore u name npr.
+            ['param' => 11],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ));
+    }
+
+    /**
+     * @Route("/download")
+     */
+    public function download() {
+        $path = $this->getParameter('download_directory');
+
+        return $this->file($path.'file.pdf');
+    }
+
+    /**
+     * @Route("/redirect-test")
+     */
+    public function redirectTest() {
+        return $this->redirectToRoute('route_to_redirect', ['param' => 9]);
+    }
+
+    /**
+     * @Route("/url-to-redirect/{param?}", name="route_to_redirect")
+     */
+    public function methodToRedirect() {
+        exit('Test redirection');
+    }
+
+    /**
+     * @Route("/forwarding-to-controller")
+     */
+    public function forwardingToController() {
+        $response = $this->forward('App\Controller\DefaultController::methodForwardTo', ['p' => 3]);
+        return $response;
+    }
+
+    /**
+     * @Route("/url-to-forward-to/{p?}", name="route_to_forward_to")
+     */
+    public function methodForwardTo($p) {
+        exit('Test controller forwarding - '.$p);
+    }
 }
+
