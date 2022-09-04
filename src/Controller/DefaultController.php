@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
         //use $logger service
     }
     /**
-     * @Route("/page", name="app_default")
+     * @Route("/home", name="default", name="home")
      */
     public function index(
         GiftsService $giftsService, Request $request, SessionInterface $session

@@ -1,0 +1,26 @@
+{
+  "name": "mysymfony44",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NemCir/mysymfony44.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NemCir/mysymfony44/issues"
+  },
+  "homepage": "https://github.com/NemCir/mysymfony44#readme",
+  "devDependencies": {
+    "@symfony/webpack-encore": "^3.1.0",
+    "webpack-notifier": "^1.15.0"
+  },
+  "dependencies": {
+    "jquery": "^3.6.1"
+  }
+}

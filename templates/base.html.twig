@@ -8,9 +8,7 @@
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}
-        <script>
-        alert(1);
-        </script>
+        <script src="{{asset('build/js/custom.js')}}"></script>
         {# <script src="{{ asset('js/main.js') }}"></script> #}
         {% endblock %}
     </body>
