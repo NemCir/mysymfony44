@@ -21,25 +21,31 @@ class DefaultController extends AbstractController
         //use $logger service
     }
     /**
-     * @Route("/home", name="default", name="home")
+     * @Route("/home/{id?}", name="default", name="home")
      */
     public function index(
-        GiftsService $giftsService, Request $request, SessionInterface $session
+        GiftsService $giftsService, Request $request, SessionInterface $session, User $user
     ): Response 
     {
-        //exit($request->cookies->get('PHPSESSID'));
-        //$this->addFlash('notice', 'Notice message!');
-        //$this->addFlash('warning', 'Warning message!');
-        //$session->set('name', 'Nemanja');
-        //exit($request->query->get('page', 1));//GET
-        //$request->request->get('page');//POST
+        /*exit($request->cookies->get('PHPSESSID'));
+        $this->addFlash('notice', 'Notice message!');
+        $this->addFlash('warning', 'Warning message!');
+        $session->set('name', 'Nemanja');
+        exit($request->query->get('page', 1));//GET
+        $request->request->get('page');//POST
+        $entityManger = $this->getDoctrine()->getManager();
+        $conn = $entityManger->getConnection();
+
+        $sql = 'SELECT * FROM USER u WHERE u.id > :id';
+
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->execute(['id' => -1]);
+        dump($result->fetchAll());
+        dump($user);die;//Just type home/1 and user with id 1 will be displayed
+        */
 
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-
-        if (!$users) {
-            throw new NotFoundHttpException('No users!');
-        }
-       
+        dump($users);
         return $this->render('default/index.html.twig', [ 
             'controller_name' => 'DefaultController',
             'users' => $users,
@@ -142,6 +148,14 @@ class DefaultController extends AbstractController
      */
     public function methodForwardTo($p) {
         exit('Test controller forwarding - '.$p);
+    }
+
+    public function mostPopularPosts($number = 3) {
+         // database call:
+         $posts = ['post 1', 'post 2', 'posts 3', 'posts 4'];
+         return $this->render('default/most_popular_posts.html.twig', [
+            'posts' => $posts,
+         ]);
     }
 }
 

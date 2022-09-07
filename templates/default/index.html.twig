@@ -29,6 +29,10 @@
     {{ app.request.get('param') }}
     {{  app.environment }}
     {{ dump(app.session) }}#}
+    {{render(controller(
+        'App\\Controller\\DefaultController::mostPopularPosts',
+        { 'number': 2 }
+    ))}}
 </div>
 {% endblock %}
 
