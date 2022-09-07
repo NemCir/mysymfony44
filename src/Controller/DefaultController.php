@@ -42,7 +42,7 @@ class DefaultController extends AbstractController
         $result = $stmt->execute(['id' => -1]);
         dump($result->fetchAll());
         dump($user);die;//Just type home/1 and user with id 1 will be displayed
-        */
+        */ 
 
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         dump($users);
